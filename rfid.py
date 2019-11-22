@@ -2,18 +2,7 @@ import os, sys
 from serial import Serial
 import time
 
-# ser = serial.Serial('/dev/ttyUSB0',19200, timeout = 5)
-#
-# # listen for the input, exit if nothing received in timeout period
-
-# while True:
-#
-#    line = ser.readline()
-#    if len(line) == 0:
-#       print("Timi.decode('utf-8')e out! Exit.\n")
-#       sys.exit()
-#    print(line)
-
+openTag = ''
 
 ser = Serial('/dev/ttyUSB0',19200, timeout = 20)
 
@@ -26,9 +15,14 @@ while True:
         rfidtag = ''
         for i in msg:
             rfidtag = rfidtag + hex(i).decode('hex')
-        print(rfidtag)
-    cmd = bytes.fromhex(cmd)
-    ser.write(cmd)
+        if openTag == '':
+            openTag = rfidTag
+        if openTag == rfidTag:
+            print("OUVERT\n")
+        else:
+            print("MAUVAISE ID\n")
+    # cmd = bytes.fromhex(cmd)
+    # ser.write(cmd)
 
 
 # ser.write(bytes.fromhex('fe'))
